@@ -20,5 +20,18 @@
             "django": true,
             "justMyCode": true
         },
+        {
+            "name": "TEST LOCAL",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "envFile": "${workspaceFolder}/.env",
+            "args": [
+                "test",
+                "--noinput"
+            ],
+            "django": true,
+            "justMyCode": true
+        },
     ]
 }

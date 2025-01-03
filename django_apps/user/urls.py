@@ -9,7 +9,7 @@ from django_apps.user.views import UserCreateView, UserListView  # UserDetailVie
 APP_NAME = "user"
 
 urlpatterns = [
-    path("", UserCreateView.as_view(), name="user_list"),
+    path("", UserCreateView.as_view(), name="user_create"),
     path("list/", UserListView.as_view(), name="user_list"),
     # path("detail/", UserDetailView.as_view(), name="user_detail"),
 ]
