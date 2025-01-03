@@ -1,6 +1,14 @@
 # Stack for Django MongoDB by Andres Rojas
 
 
+
+## ALB PORT 8000
+- http://djangochdevelopalb-695091760.us-east-1.elb.amazonaws.com:8000/
+
+## Dominio
+- https://django-challenge-mongo.andres-rojas-l.live/swagger
+
+
 ## ⚙️ Correr proyecto con Docker
 
 Creacion del .env a partir del .env-example
