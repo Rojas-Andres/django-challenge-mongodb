@@ -1,4 +1,4 @@
-# Stack for Django Projects by Andres Rojas
+# Stack for Django MongoDB by Andres Rojas
 
 - Create alias
     - alias reset_docker='echo "Source .envrc" && source .envrc && echo "Down Docker" && make down && clear && echo "Down Build Docker" && make build && clear && echo "Up Detach" && make up-d'
@@ -27,9 +27,9 @@
     - O:\AA-DOWNLOAD-D\resources\bin
 
 
-docker build --no-cache -t django:v1 .
+docker build --no-cache -t django-mongo:v1 .
 
 - Probar local
-    - docker run -p 8000:8000 django:v1
+    - docker run -p 8000:8000 django-mongo:v1
 
 find . -type f -name "*.Identifier" -exec rm {} +

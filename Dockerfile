@@ -10,6 +10,14 @@ RUN mkdir /var/uwsgi \
     && chown -R www-data:www-data /var/uwsgi \
     && chmod -R 777 /var/uwsgi
 
+RUN mkdir -p /app/staticfiles \
+    && chown -R www-data:www-data /app/staticfiles \
+    && chmod -R 777 /app/staticfiles
+
+RUN mkdir -p /static \
+    && chown -R www-data:www-data /static \
+    && chmod -R 777 /static
+
 RUN rm /etc/nginx/nginx.conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 

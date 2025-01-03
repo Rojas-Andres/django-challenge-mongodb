@@ -178,3 +178,6 @@ DEFAULT_PAGE_SIZE = 10
 
 SECRET_KEY = os.getenv("SECRET_KEY", "secret_key")
 TOKEN_MINUTES_EXPIRATION = int(os.getenv("TOKEN_MINUTES_EXPIRATION", 60))
+
+STATIC_URL = '/static/'
+STATIC_ROOT = '/app/staticfiles/'
