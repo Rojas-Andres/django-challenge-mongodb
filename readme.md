@@ -1,20 +1,47 @@
 # Stack for Django MongoDB by Andres Rojas
 
-- Create alias
-    - alias reset_docker='echo "Source .envrc" && source .envrc && echo "Down Docker" && make down && clear && echo "Down Build Docker" && make build && clear && echo "Up Detach" && make up-d'
 
-- Documentacion arquitectura DDD
-    - https://www.cosmicpython.com/book/part1.html
+## ⚙️ Correr proyecto con Docker
 
-- Necesario para iniciar el proyecto
-    - crear un role llamado RoleAWSAccess y darle permisos
-    - Crear un bucket para guardar los templates
-    - Crear la cola sqs en aws y guardarla en la siguiente envs
-        -
-- obtener access para acceder a los recursos de aws localmente
+Creacion del .env a partir del .env-example
 
-    - aws sts assume-role --role-arn arn:aws:iam::AWS_ACCOUNT_ID:role/RoleAWSAccess --role-session-name awscli --profile jumpcube --query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" --output text | awk '{print "export AWS_ACCESS_KEY_ID="$1"\nexport AWS_SECRET_ACCESS_KEY="$2"\nexport AWS_SECURITY_TOKEN="$3""}' >> .envrc
 
+1. Asegúrate de haber configurado el archivo `.env` en la raíz del proyecto.
+
+2. Construye las imágenes de Docker:
+   ```bash
+   docker-compose build
+   ```
+
+3. Inicia los contenedores:
+   ```bash
+   docker-compose up
+   ```
+
+
+## 🌐 Despliegue AWS
+
+### Creación de ECR para imágenes Docker
+![](images/deployment/creation_images_ecr.png)
+
+### Ejecución exitosa de CodePipeline
+![](images/aws/cluster_and_service_running_ecs_aws.png)
+
+### Load Balancer activo
+![](images/aws/creacion_load_balancer.png)
+
+### Tarea ECS Fargate ejecutada exitosamente
+![](images/aws/cluster_and_service_running_ecs_aws.png)
+
+### CloudFormation ejecutado exitosamente
+![](images/aws/cloudformation_success.png)
+
+### Acceso al Load Balancer en el puerto 8000
+![](images/aws/access_load_balancer_8000.png)
+
+
+### Acceso al dominio
+![](images/aws/domain_swagger.png)
 
 
 # Build Fargate
@@ -32,4 +59,3 @@ docker build --no-cache -t django-mongo:v1 .
 - Probar local
     - docker run -p 8000:8000 django-mongo:v1
 
-find . -type f -name "*.Identifier" -exec rm {} +
