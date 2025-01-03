@@ -22,8 +22,10 @@ DATABASES = {
         "AUTH_SOURCE": "admin",
         "CLIENT": {
             "host": os.environ.get("MONGO_CLIENT_HOST"),
-            "serverSelectionTimeoutMS": 5000,
+            "serverSelectionTimeoutMS": 10000,
             "maxIdleTimeMS": 60000,
+            "retryReads": True,
+            "connectTimeoutMS": 10000,
             "retryWrites": True,
             "maxPoolSize": 50,
             "minPoolSize": 10,
