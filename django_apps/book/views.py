@@ -100,9 +100,7 @@ class BookListView(APIErrorsMixin, ListCoreView):
         author = serializers.CharField(allow_null=True)
         published_date = serializers.DateField(allow_null=True)
         genre = serializers.ImageField(allow_null=True)
-        price = serializers.IntegerField(
-           
-        )
+        price = serializers.IntegerField()
 
     serializer_class = OutputGetSerializer
     queryset = Book.objects.all()
@@ -146,5 +144,39 @@ class UpdateBookView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
             **input_serializer.validated_data, book_id=book_id
         )
         output_data = self.OutputPatchSerializer(data=blog)
+        output_data.is_valid(raise_exception=True)
+        return Response(data=output_data.validated_data, status=status.HTTP_200_OK)
+
+
+@GenerateSwagger(swagger_auto_schema)
+class BookAverageYearView(APIErrorsMixin, APIView):
+    """
+    A view for retrieving a list of all users.
+    Requires authentication to access the view.
+    """
+
+    sensible_keys = ("token",)
+    authentication_classes = (TokenAuthentication,)
+
+    class InputGetSerializer(serializers.Serializer):
+        year = serializers.IntegerField(required=True)
+
+        def validate_year(self, value):
+            if value > timezone.now().year:
+                raise serializers.ValidationError("Year cannot be in the future")
+            if value < 1900:
+                raise serializers.ValidationError("Year cannot be before 1900")
+            return value
+
+    class OutputGetSerializer(serializers.Serializer):
+        average = serializers.FloatField(required=True)
+
+    def get(self, request):
+        input_serializer = self.InputGetSerializer(data=request.query_params)
+        input_serializer.is_valid(raise_exception=True)
+        average = services.GetAveragePriceBookService(uow=BlogUnitOfWork()).get(
+            **input_serializer.validated_data
+        )
+        output_data = self.OutputGetSerializer(data=dict(average=average))
         output_data.is_valid(raise_exception=True)
         return Response(data=output_data.validated_data, status=status.HTTP_200_OK)

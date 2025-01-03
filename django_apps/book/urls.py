@@ -9,6 +9,7 @@ from django_apps.book.views import (
     DeleteBookView,
     BookListView,
     UpdateBookView,
+    BookAverageYearView,
 )
 
 APP_NAME = "book"
@@ -16,6 +17,7 @@ APP_NAME = "book"
 urlpatterns = [
     path("", CreateBookView.as_view(), name="create_book_view"),
     path("list", BookListView.as_view(), name="list_book_view"),
+    path("average_year", BookAverageYearView.as_view(), name="average_year_view"),
     path("<str:book_id>", UpdateBookView.as_view(), name="patch_book_view"),
     path("<str:book_id>", DeleteBookView.as_view(), name="delete_book_view"),
 ]

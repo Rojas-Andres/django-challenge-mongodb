@@ -26,6 +26,10 @@ class AbstractBookRepository(ABC):
     def update(self, book_id: int, data: dict):
         raise NotImplementedError
 
+    @abstractmethod
+    def get_average_price_year(self, year: int):
+        raise NotImplementedError
+
 
 class AbstractBookUnitOfWork(ABC):
     book: AbstractBookRepository

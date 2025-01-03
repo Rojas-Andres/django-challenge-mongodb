@@ -1,6 +1,7 @@
 from src.book.domain.repository import AbstractBookRepository
 from django_apps.book.models import Book
 from datetime import date
+from django.db.models import Avg
 
 from bson import ObjectId
 
@@ -55,3 +56,9 @@ class BookDjangoRepository(AbstractBookRepository):
                 setattr(book, key, value)
         book.save()
         return self.to_dict(book)
+
+    def get_average_price_year(self, year: int) -> float:
+        average = Book.objects.filter(published_date__year=year).aggregate(
+            average_price=Avg("price")
+        )["average_price"]
+        return average

@@ -86,6 +86,22 @@ class UpdateBlogService:
                 published_date=published_date,
                 genre=genre,
                 price=Decimal(price) if price else None,
-            )
+            ),
         )
         return blog
+
+
+class GetAveragePriceBookService:
+    def __init__(
+        self,
+        uow: AbstractBookUnitOfWork,
+    ):
+        self.uow = uow
+
+    def get(
+        self,
+        year: int,
+    ) -> str:
+        average_year = self.uow.book.get_average_price_year(year=year)
+        print(average_year)
+        return average_year
