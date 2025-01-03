@@ -52,7 +52,14 @@ Creacion del .env a partir del .env-example
 ![](images/aws/domain_swagger.png)
 
 ### Test Success
-![](images/aws/test_success.png)
+![](images/require/test_success.png)
+
+
+### Ejecucion comando que crea books
+![](images/require/command_create_books.png)
+
+### Mongo local books
+![](images/require/mongo_local.png)
 
 # Build Fargate
 
@@ -73,4 +80,5 @@ docker build --no-cache -t django-mongo:v1 .
 
 ## Consideraciones
 
--
+- Como implemente el proyecto en una capa gratuita de mongo, esta conexion se cierra muy rapido.
+
