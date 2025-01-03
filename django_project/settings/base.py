@@ -32,7 +32,7 @@ BASE_APPS = [
 LOCAL_APPS = [
     "django_apps.core",
     "django_apps.user",
-    "django_apps.blog",
+    "django_apps.book",
 ]
 
 THIRD_APPS = [

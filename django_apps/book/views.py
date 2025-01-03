@@ -14,14 +14,14 @@ from django_apps.utils.views.generic_decorators import GenerateSwagger
 from django_apps.utils.views.mixins import APIErrorsMixin, LoggingRequestViewMixin
 
 from src.auth.adapters.django_authenticator import TokenAuthentication
-from src.blog.service_layer import services
-from src.blog.adapters.unit_of_work import BlogUnitOfWork
+from src.book.service_layer import services
+from src.book.adapters.unit_of_work import BlogUnitOfWork
 
 logger = logging.getLogger(__name__)
 
 
 @GenerateSwagger(swagger_auto_schema)
-class CreateBlogView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
+class CreateBookView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
     sensible_keys = ("token",)
     authentication_classes = (TokenAuthentication,)
 
@@ -39,7 +39,12 @@ class CreateBlogView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
                 )
             return value
 
-    class OutputPostSerializer(serializers.Serializer): ...
+    class OutputPostSerializer(serializers.Serializer):
+        title = serializers.CharField(max_length=255)
+        author = serializers.CharField(max_length=255)
+        published_date = serializers.DateField()
+        genre = serializers.CharField(max_length=100)
+        price = serializers.DecimalField(max_digits=10, decimal_places=2)
 
     def post(self, request):
         input_serializer = self.InputPostSerializer(data=request.data)
@@ -47,4 +52,6 @@ class CreateBlogView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
         blog = services.CreateBlogService(uow=BlogUnitOfWork()).create(
             **input_serializer.validated_data
         )
-        return Response(status=status.HTTP_201_CREATED)
+        output_data = self.OutputPostSerializer(data=blog)
+        output_data.is_valid(raise_exception=True)
+        return Response(data=output_data.validated_data, status=status.HTTP_200_OK)

@@ -26,7 +26,7 @@ urlpatterns = [
     path("", HealtCheck.as_view(), name="healtcheck"),
     path("api/user/", include("django_apps.user.urls")),
     path("api/auth/", include("django_apps.auth.urls")),
-    path("api/blog/", include("django_apps.blog.urls")),
+    path("api/book/", include("django_apps.book.urls")),
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",
         schema_view.without_ui(cache_timeout=0),
