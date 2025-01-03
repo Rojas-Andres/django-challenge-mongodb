@@ -5,6 +5,7 @@ from pynamodb.attributes import (
     UTCDateTimeAttribute,
 )
 from pynamodb.models import Model
+from django.conf import settings
 
 
 class IngressAPILog(Model):
@@ -17,7 +18,7 @@ class IngressAPILog(Model):
     status_code = NumberAttribute(null=True)
 
     class Meta:
-        table_name = "DjangoIngressAPILog"
+        table_name = settings.DYNAMODB_INGRESS_API_LOG_TABLE_NAME
 
 
 class EgressAPILog(IngressAPILog):

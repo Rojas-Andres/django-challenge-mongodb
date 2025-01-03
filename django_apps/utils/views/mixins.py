@@ -85,30 +85,31 @@ class LoggingRequestViewMixin:
     sensible_keys = ["password", "token"]
 
     def finalize_response(self, request, response, *args, **kwargs):
-        service_name = request.path
-        request_data = copy.deepcopy(request.data)
-        http_method = request.method
-        status_code = response.status_code
-        response_data = copy.deepcopy(response.data)
+        try:
+            service_name = request.path
+            request_data = copy.deepcopy(request.data)
+            http_method = request.method
+            status_code = response.status_code
+            response_data = copy.deepcopy(response.data)
 
-        obfuscate_sensible_data(sensible_keys=self.sensible_keys, data=request_data)
-        obfuscate_sensible_data(sensible_keys=self.sensible_keys, data=response_data)
+            obfuscate_sensible_data(sensible_keys=self.sensible_keys, data=request_data)
+            obfuscate_sensible_data(
+                sensible_keys=self.sensible_keys, data=response_data
+            )
 
-        internal_api_log_data = {
-            "service_name": service_name,
-            "http_method": http_method,
-            "request_data": request_data,
-        }
-
-        # try:
-        #     self._internal_api_log(
-        #         **internal_api_log_data,
-        #         response_data=response_data,
-        #         status_code=status_code,
-        #     )
-        # except Exception as exc:
-        #     error = str(exc)
-        #     raise exc
+            internal_api_log_data = {
+                "service_name": service_name,
+                "http_method": http_method,
+                "request_data": request_data,
+            }
+            self._internal_api_log(
+                **internal_api_log_data,
+                response_data=response_data,
+                status_code=status_code,
+            )
+        except Exception as e:
+            print(f"Error while logging request and response: {e}")
+            # send slack error message
         return super().finalize_response(request, response, *args, **kwargs)
 
     def _internal_api_log(
@@ -125,7 +126,6 @@ class LoggingRequestViewMixin:
             prepare_data_for_json_serialization(data=request_data)
         if response_data:
             prepare_data_for_json_serialization(data=response_data)
-
         timestamp = datetime.utcnow()
         internal_log = IngressAPILog(
             service_name=service_name,
@@ -136,5 +136,4 @@ class LoggingRequestViewMixin:
             error=error,
             status_code=status_code,
         )
-
         internal_log.save()

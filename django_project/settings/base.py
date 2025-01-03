@@ -14,6 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY", "SECRET_KEY")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "dev")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -179,5 +180,7 @@ DEFAULT_PAGE_SIZE = 10
 SECRET_KEY = os.getenv("SECRET_KEY", "secret_key")
 TOKEN_MINUTES_EXPIRATION = int(os.getenv("TOKEN_MINUTES_EXPIRATION", 60))
 
-STATIC_URL = '/static/'
-STATIC_ROOT = '/app/staticfiles/'
+STATIC_URL = "/static/"
+STATIC_ROOT = "/app/staticfiles/"
+
+DYNAMODB_INGRESS_API_LOG_TABLE_NAME = os.getenv("DYNAMODB_INGRESS_API_LOG_TABLE_NAME")

@@ -237,8 +237,6 @@ Resources:
               Value: !Ref AWS::Region
             - Name: ENV_AWS_REGION
               Value: !Ref AWS::Region
-            - Name: BUCKET_NAME
-              Value: !Sub "${BucketName}-s3-assets-${Environment}"
             - Name: DYNAMODB_INGRESS_API_LOG_TABLE_NAME
               Value: !Ref IngressAPILogTable
             - Name: DYNAMODB_EGRESS_API_LOG_TABLE_NAME
