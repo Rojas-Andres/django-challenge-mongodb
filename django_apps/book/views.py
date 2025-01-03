@@ -36,7 +36,7 @@ class CreateBookView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
         author = serializers.CharField(max_length=255)
         published_date = serializers.DateField()
         genre = serializers.CharField(max_length=100)
-        price = serializers.DecimalField(max_digits=10, decimal_places=2)
+        price = serializers.IntegerField()
 
         def validate_published_date(self, value):
             if value > timezone.now().date():
@@ -50,7 +50,7 @@ class CreateBookView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
         author = serializers.CharField(max_length=255)
         published_date = serializers.DateField()
         genre = serializers.CharField(max_length=100)
-        price = serializers.DecimalField(max_digits=10, decimal_places=2)
+        price = serializers.IntegerField()
 
     def post(self, request):
         input_serializer = self.InputPostSerializer(data=request.data)
@@ -100,8 +100,8 @@ class BookListView(APIErrorsMixin, ListCoreView):
         author = serializers.CharField(allow_null=True)
         published_date = serializers.DateField(allow_null=True)
         genre = serializers.ImageField(allow_null=True)
-        price = serializers.DecimalField(
-            max_digits=10, decimal_places=2, allow_null=True
+        price = serializers.IntegerField(
+           
         )
 
     serializer_class = OutputGetSerializer
@@ -109,3 +109,42 @@ class BookListView(APIErrorsMixin, ListCoreView):
     pagination_class = CorePagination
     filter_backends = [OrderingFilter, DjangoFilterBackend]
     filterset_class = BookFilter
+
+
+@GenerateSwagger(swagger_auto_schema)
+class UpdateBookView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
+    sensible_keys = ("token",)
+    authentication_classes = (TokenAuthentication,)
+
+    class InputPatchSerializer(serializers.Serializer):
+        title = serializers.CharField(required=False, max_length=255)
+        author = serializers.CharField(required=False, max_length=255)
+        published_date = serializers.DateField(required=False)
+        genre = serializers.CharField(required=False, max_length=100)
+        price = serializers.IntegerField(
+            required=False,
+        )
+
+        def validate_published_date(self, value):
+            if value > timezone.now().date():
+                raise serializers.ValidationError(
+                    "Published date no puede ser en el futuro"
+                )
+            return value
+
+    class OutputPatchSerializer(serializers.Serializer):
+        title = serializers.CharField(max_length=255)
+        author = serializers.CharField(max_length=255)
+        published_date = serializers.DateField()
+        genre = serializers.CharField(max_length=100)
+        price = serializers.IntegerField()
+
+    def patch(self, request, book_id):
+        input_serializer = self.InputPatchSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+        blog = services.UpdateBlogService(uow=BlogUnitOfWork()).update(
+            **input_serializer.validated_data, book_id=book_id
+        )
+        output_data = self.OutputPatchSerializer(data=blog)
+        output_data.is_valid(raise_exception=True)
+        return Response(data=output_data.validated_data, status=status.HTTP_200_OK)

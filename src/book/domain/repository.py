@@ -22,6 +22,10 @@ class AbstractBookRepository(ABC):
     def delete(self, book_id: str):
         raise NotImplementedError
 
+    @abstractmethod
+    def update(self, book_id: int, data: dict):
+        raise NotImplementedError
+
 
 class AbstractBookUnitOfWork(ABC):
     book: AbstractBookRepository

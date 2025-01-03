@@ -47,3 +47,11 @@ class BookDjangoRepository(AbstractBookRepository):
     def delete(self, book_id: str):
         book = Book.objects.filter(_id=ObjectId(book_id)).first()
         book.delete()
+
+    def update(self, book_id: str, data: dict):
+        book = Book.objects.filter(_id=ObjectId(book_id)).first()
+        for key, value in data.items():
+            if value is not None:
+                setattr(book, key, value)
+        book.save()
+        return self.to_dict(book)
