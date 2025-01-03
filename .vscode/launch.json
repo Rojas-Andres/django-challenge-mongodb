@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Migrations",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "envFile": "${workspaceFolder}/.env",
+            "args": ["makemigrations", ],
+            "django": true,
+            "justMyCode": true
+        },
+        {
+            "name": "API LOCAL",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "envFile": "${workspaceFolder}/.env",
+            "args": ["runserver", ],
+            "django": true,
+            "justMyCode": true
+        },
+    ]
+}
