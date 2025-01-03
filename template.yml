@@ -5,43 +5,43 @@ Parameters:
   Environment:
     Description: Description
     Type: AWS::SSM::Parameter::Value<String>
-    Default: EnvironmentBTI
+    Default: Environment
   BucketName:
     Description: Description
     Type: AWS::SSM::Parameter::Value<String>
-    Default: BucketNameBTI
+    Default: BucketName
   StackName:
     Description: Description
     Type: AWS::SSM::Parameter::Value<String>
-    Default: StackNameBTI
+    Default: StackName
   VPCId:
     Description: Description
     Type: AWS::SSM::Parameter::Value<String>
-    Default: VPCIdBTI
+    Default: VPCId
   PublicSubnetOne:
     Description: Description
     Type: AWS::SSM::Parameter::Value<String>
-    Default: PublicSubnetOneBTI
+    Default: PublicSubnetOne
   PublicSubnetTwo:
     Description: PublicSubnetTwo
     Type: AWS::SSM::Parameter::Value<String>
-    Default: PublicSubnetTwoBTI
+    Default: PublicSubnetTwo
   PrivateSubnetOne:
     Description: Description
     Type: AWS::SSM::Parameter::Value<String>
-    Default: PrivateSubnetOneBTI
+    Default: PrivateSubnetOne
   PrivateSubnetTwo:
     Description: PrivateSubnetTwo
     Type: AWS::SSM::Parameter::Value<String>
-    Default: PrivateSubnetTwoBTI
+    Default: PrivateSubnetTwo
   ArnCertificateACM:
     Description: PublicSubnetTwo
     Type: AWS::SSM::Parameter::Value<String>
-    Default: ArnCertificateACMBTI
+    Default: ArnCertificateACM
   EcrRepositoryDjango:
     Description: Description
     Type: AWS::SSM::Parameter::Value<String>
-    Default: EcrRepositoryDjangoBTI
+    Default: EcrRepositoryDjango
 
 Resources:
 

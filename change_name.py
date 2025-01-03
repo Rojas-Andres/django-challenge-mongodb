@@ -26,4 +26,4 @@ if __name__ == "__main__":
     supervisor_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "template.yml"
     )
-    update_name(supervisor_path, f"BTI{environment}", "BTI")
+    update_name(supervisor_path, f"{environment}", "")
