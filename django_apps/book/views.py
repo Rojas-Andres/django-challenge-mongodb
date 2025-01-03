@@ -16,6 +16,12 @@ from django_apps.utils.views.mixins import APIErrorsMixin, LoggingRequestViewMix
 from src.auth.adapters.django_authenticator import TokenAuthentication
 from src.book.service_layer import services
 from src.book.adapters.unit_of_work import BlogUnitOfWork
+from django_apps.utils.views.generic_views import ListCoreView
+from django_apps.book.models import Book
+from django_apps.utils.views.pagination import CorePagination
+from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from django_apps.book.filters import BookFilter
 
 logger = logging.getLogger(__name__)
 
@@ -76,3 +82,30 @@ class DeleteBookView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
         return Response(
             data={"message": "Book deleted successfully"}, status=status.HTTP_200_OK
         )
+
+
+@GenerateSwagger(swagger_auto_schema)
+class BookListView(APIErrorsMixin, ListCoreView):
+    """
+    A view for retrieving a list of all users.
+    Requires authentication to access the view.
+    """
+
+    sensible_keys = ("token",)
+    authentication_classes = (TokenAuthentication,)
+
+    class OutputGetSerializer(serializers.Serializer):
+        _id = serializers.CharField()
+        title = serializers.CharField(allow_null=True)
+        author = serializers.CharField(allow_null=True)
+        published_date = serializers.DateField(allow_null=True)
+        genre = serializers.ImageField(allow_null=True)
+        price = serializers.DecimalField(
+            max_digits=10, decimal_places=2, allow_null=True
+        )
+
+    serializer_class = OutputGetSerializer
+    queryset = Book.objects.all()
+    pagination_class = CorePagination
+    filter_backends = [OrderingFilter, DjangoFilterBackend]
+    filterset_class = BookFilter
