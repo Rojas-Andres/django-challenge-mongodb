@@ -21,7 +21,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("MONGO_PASSWORD"),
         "AUTH_SOURCE": "admin",
         "CLIENT": {
-            "host": f"mongodb://{os.environ.get('MONGO_USER')}:{os.environ.get('MONGO_PASSWORD')}@{os.environ.get('MONGO_HOST')}:27017/?authSource=admin"
+            "host": os.environ.get("MONGO_CLIENT_HOST"),
         },
     }
 }

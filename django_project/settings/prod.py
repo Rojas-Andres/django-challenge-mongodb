@@ -14,22 +14,15 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default=[])
 DATABASES = {
     "default": {
         "ENGINE": "djongo",
-        "NAME": os.environ.get("MONGO_NAME"),  # Replace with your MongoDB database name
-        "HOST": os.environ.get(
-            "MONGO_HOST"
-        ),  # Replace with your MongoDB host (e.g., MongoDB Atlas URI)
-        "PORT": os.environ.get(
-            "MONGO_PORT", 27017
-        ),  # Replace with your MongoDB port (default is 27017)
-        "USERNAME": os.environ.get(
-            "MONGO_USER"
-        ),  # Replace with your MongoDB username (if using authentication)
-        "PASSWORD": os.environ.get(
-            "MONGO_PASSWORD"
-        ),  # Replace with your MongoDB password (if using authentication)
-        "AUTH_SOURCE": os.environ.get(
-            "MONGO_PASSWORD"
-        ),  # Replace with the authentication database (default is 'admin')
+        "NAME": os.environ.get("MONGO_NAME"),
+        "HOST": os.environ.get("MONGO_HOST"),
+        "PORT": 27017,
+        "USERNAME": os.environ.get("MONGO_USER"),
+        "PASSWORD": os.environ.get("MONGO_PASSWORD"),
+        "AUTH_SOURCE": "admin",
+        "CLIENT": {
+            "host": os.environ.get("MONGO_CLIENT_HOST"),
+        },
     }
 }
 
