@@ -30,7 +30,6 @@ COPY scripts_docker/start_dev.sh /usr/local/bin/start_dev.sh
 RUN chmod +x /usr/local/bin/start_dev.sh
 # RUN dos2unix /usr/local/bin/start_dev.sh
 
-COPY scripts_docker/postgres-healthy.sh /tmp/postgres-healthy.sh
 COPY manage.py /project_django/
 
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user

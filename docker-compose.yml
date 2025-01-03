@@ -63,7 +63,7 @@ services:
       - PIP_DEFAULT_TIMEOUT=100
       - DATABASE=postgres
     env_file:
-      - ./.envrc
+      - ./.env
     ports:
       - '8000:8000'
     volumes:
