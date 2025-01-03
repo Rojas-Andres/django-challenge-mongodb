@@ -51,6 +51,8 @@ Creacion del .env a partir del .env-example
 ### Acceso al dominio
 ![](images/aws/domain_swagger.png)
 
+### Test Success
+![](images/aws/test_success.png)
 
 # Build Fargate
 
@@ -67,3 +69,8 @@ docker build --no-cache -t django-mongo:v1 .
 - Probar local
     - docker run -p 8000:8000 django-mongo:v1
 
+
+
+## Consideraciones
+
+-

@@ -16,12 +16,16 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from shared.utils.core.json import prepare_data_for_json_serialization
 from shared.utils.core.sensible import obfuscate_sensible_data
 from shared.utils.core.logging.models import IngressAPILog
-from pymongo.errors import (
-    NetworkTimeout,
-)
+from pymongo.errors import NetworkTimeout, ServerSelectionTimeoutError
 
 
 class NetworkTimeoutDB(rest_exceptions.APIException):
+    status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+    default_detail = "Network Timeout RECUERDE es una capa gratuita de mongo y eso se cae cada 10 segundos, pruebe mejor local con docker-compose el proyecto"
+    default_code = "error_connection_mongo"
+
+
+class ServerSelectionTimeoutErrorDB(rest_exceptions.APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
     default_detail = "Network Timeout RECUERDE es una capa gratuita de mongo y eso se cae cada 10 segundos, pruebe mejor local con docker-compose el proyecto"
     default_code = "error_connection_mongo"
@@ -40,6 +44,7 @@ class Base:
         ObjectDoesNotExist: rest_exceptions.NotFound,
         ValidationError: rest_exceptions.ValidationError,
         NetworkTimeout: NetworkTimeoutDB,
+        ServerSelectionTimeoutError: ServerSelectionTimeoutErrorDB,
     }
 
     def handle_exception(self, exc):
