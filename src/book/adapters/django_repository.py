@@ -2,6 +2,8 @@ from src.book.domain.repository import AbstractBookRepository
 from django_apps.book.models import Book
 from datetime import date
 
+from bson import ObjectId
+
 
 class BookDjangoRepository(AbstractBookRepository):
     def create(
@@ -35,3 +37,13 @@ class BookDjangoRepository(AbstractBookRepository):
             "genre": book.genre,
             "price": book.price,
         }
+
+    def validate_book_exist_by_id(self, book_id: str):
+        book = Book.objects.filter(_id=ObjectId(book_id)).first()
+        if book is None:
+            return False
+        return book
+
+    def delete(self, book_id: str):
+        book = Book.objects.filter(_id=ObjectId(book_id)).first()
+        book.delete()

@@ -6,6 +6,7 @@ from djongo import models
 
 
 class Book(models.Model):
+    _id = models.ObjectIdField(primary_key=True)
     title = models.CharField(max_length=255, blank=False, null=False)
     author = models.CharField(max_length=255, blank=False, null=False)
     published_date = models.DateField(blank=False, null=False)

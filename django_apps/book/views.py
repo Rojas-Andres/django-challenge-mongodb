@@ -55,3 +55,24 @@ class CreateBookView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
         output_data = self.OutputPostSerializer(data=blog)
         output_data.is_valid(raise_exception=True)
         return Response(data=output_data.validated_data, status=status.HTTP_200_OK)
+
+
+@GenerateSwagger(swagger_auto_schema)
+class DeleteBookView(LoggingRequestViewMixin, APIErrorsMixin, APIView):
+    sensible_keys = ("token",)
+    authentication_classes = (TokenAuthentication,)
+
+    class InputDeleteSerializer(serializers.Serializer):
+        book_id = serializers.CharField(max_length=255)
+
+    class OutputPostSerializer(serializers.Serializer): ...
+
+    def delete(self, request, book_id):
+        input_serializer = self.InputDeleteSerializer(data=dict(book_id=book_id))
+        input_serializer.is_valid(raise_exception=True)
+        services.DeleteBlogService(uow=BlogUnitOfWork()).delete(
+            **input_serializer.validated_data
+        )
+        return Response(
+            data={"message": "Book deleted successfully"}, status=status.HTTP_200_OK
+        )
