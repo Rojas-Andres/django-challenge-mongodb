@@ -6,10 +6,6 @@ Parameters:
     Description: Description
     Type: AWS::SSM::Parameter::Value<String>
     Default: Environment
-  BucketName:
-    Description: Description
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: BucketName
   StackName:
     Description: Description
     Type: AWS::SSM::Parameter::Value<String>
@@ -100,80 +96,6 @@ Resources:
       Tags:
         - Key: "Environment"
           Value: !Ref Environment
-
-
-  BucketS3InputDataAssets:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub "${BucketName}-s3-assets-${Environment}"
-      CorsConfiguration:
-        CorsRules:
-          - AllowedMethods:
-              - GET
-              - HEAD
-              - POST
-              - PUT
-            AllowedOrigins:
-              - "*"
-            AllowedHeaders:
-              - "*"
-            MaxAge: 300
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-
-  OriginAccessIdentityBucketIDP:
-    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
-    Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: "Origin Access Identity for Bucket IDP"
-
-  BucketIDPAssetsPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket: !Ref BucketS3InputDataAssets
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              CanonicalUser: !GetAtt OriginAccessIdentityBucketIDP.S3CanonicalUserId
-            Action: "s3:GetObject"
-            Resource: !Sub "${BucketS3InputDataAssets.Arn}/*"
-          - Effect: Allow
-            Principal:
-              CanonicalUser: !GetAtt OriginAccessIdentityBucketIDP.S3CanonicalUserId
-            Action:
-              - "s3:GetBucket*"
-              - "s3:GetObject*"
-              - "s3:List*"
-            Resource:
-              - !Sub "${BucketS3InputDataAssets.Arn}"
-              - !Sub "${BucketS3InputDataAssets.Arn}/*"
-
-  DistributionBucketIDP:
-    Type: AWS::CloudFront::Distribution
-    Properties:
-      DistributionConfig:
-        Origins:
-          - DomainName: !GetAtt BucketS3InputDataAssets.DomainName
-            Id: "S3Origin"
-            S3OriginConfig:
-              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${OriginAccessIdentityBucketIDP}"
-        DefaultCacheBehavior:
-          TargetOriginId: "S3Origin"
-          ViewerProtocolPolicy: "redirect-to-https"
-          AllowedMethods:
-            - GET
-            - HEAD
-          CachedMethods:
-            - GET
-            - HEAD
-          ForwardedValues:
-            QueryString: false
-        Enabled: true
 
 
   PrivateDnsNamespaceVpc:
@@ -311,8 +233,6 @@ Resources:
             Retries: 3
             StartPeriod: 30
           Environment:
-            - Name: ENV_AWS_BUCKET_NAME
-              Value: !Sub "${BucketName}-s3-assets-${Environment}"
             - Name: REGION_BUCKET
               Value: !Ref AWS::Region
             - Name: ENV_AWS_REGION
