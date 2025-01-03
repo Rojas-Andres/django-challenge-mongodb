@@ -24,6 +24,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("", HealtCheck.as_view(), name="healtcheck"),
+    path("healtcheck/", HealtCheck.as_view(), name="healtcheck"),
     path("api/user/", include("django_apps.user.urls")),
     path("api/auth/", include("django_apps.auth.urls")),
     path("api/book/", include("django_apps.book.urls")),
