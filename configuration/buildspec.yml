@@ -9,7 +9,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - echo s3://$BUCKET_NAME_ENVS/$ENVIRONMENT.env
-      - aws s3 cp s3://$BUCKET_NAME_ENVS/$ENVIRONMENT.env ./src/.env
+      - aws s3 cp s3://$BUCKET_NAME_ENVS/$ENVIRONMENT.env .env
 
       - pip install boto3==1.35.22
   build:
